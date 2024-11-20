@@ -4,6 +4,7 @@
     "slug": "vibematch",
     "version": "1.0.0",
     "orientation": "portrait",
+    "newArchEnabled": true,
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -22,6 +23,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "85cf4b1d-a0e8-4947-bba5-e9bc72197e23"
+      }
+    },
+    "owner": "celeste_evora",
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
