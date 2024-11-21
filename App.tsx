@@ -6,8 +6,6 @@ import {
     Platform,
     StatusBar,
 } from "react-native";
-import Login from "@/views/Login";
-import Register from "@/views/Register";
 import Start from "./views/Start";
 
 export default function App() {

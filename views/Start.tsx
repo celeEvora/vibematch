@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet } from "react-native";
+import { Link } from "expo-router";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Pressable,
+    TouchableOpacity,
+} from "react-native";
 import { TopCircleGradient } from "@/components/TopCircleGradient";
 import { GradientButton } from "@/components/GradientButton";
 
@@ -25,6 +32,7 @@ export default function Start() {
                         VibeMatch!
                     </Text>
                 </Text>
+
                 <Text
                     style={{
                         fontSize: 18,
@@ -41,17 +49,17 @@ export default function Start() {
                 </Text>
 
                 <View style={{ marginTop: 20, gap: 20, width: "80%" }}>
-                    <GradientButton
-                        text="Log In"
-                        onPress={() => console.log("Log in")}
-                        rounded
-                    />
+                    <Link href="/login" asChild>
+                        <TouchableOpacity>
+                            <GradientButton text="Log In" rounded />
+                        </TouchableOpacity>
+                    </Link>
 
-                    <GradientButton
-                        text="Register"
-                        onPress={() => console.log("Register")}
-                        rounded
-                    />
+                    <Link href="/register" asChild>
+                        <TouchableOpacity>
+                            <GradientButton text="Register" rounded />
+                        </TouchableOpacity>
+                    </Link>
                 </View>
             </View>
         </View>

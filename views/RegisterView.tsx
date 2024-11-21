@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Link } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FormProvider, useForm } from "react-hook-form";
 import TextInputForm from "@/components/TextInputForm";
 import { GradientButton } from "@/components/GradientButton";
 import { AuthLayout } from "@/components/AuthLayout";
 
-export default function Register() {
+export default function RegisterView() {
     const methods = useForm();
     const { handleSubmit } = methods;
 
@@ -86,26 +87,29 @@ export default function Register() {
                             }}
                         />
                         <View style={styles.buttonContainer}>
-                            <GradientButton
+                            <TouchableOpacity
                                 onPress={() => handleSubmit(submitForm)()}
-                                text="Register"
-                                rounded
-                            />
+                            >
+                                <GradientButton text="Register" rounded />
+                            </TouchableOpacity>
                         </View>
                     </FormProvider>
                 </View>
-                <Text style={styles.registerText}>
-                    Already have an account?{" "}
-                    <Text
-                        style={{
-                            color: "#e69069",
-                            fontWeight: 700,
-                            textDecorationLine: "underline",
-                        }}
-                    >
-                        Login
+
+                <Link href="/login">
+                    <Text style={styles.registerText}>
+                        Already have an account?{" "}
+                        <Text
+                            style={{
+                                color: "#e69069",
+                                fontWeight: 700,
+                                textDecorationLine: "underline",
+                            }}
+                        >
+                            Login
+                        </Text>
                     </Text>
-                </Text>
+                </Link>
             </View>
         </AuthLayout>
     );
@@ -123,6 +127,7 @@ const styles = StyleSheet.create({
         width: "100%",
         paddingHorizontal: 28,
         gap: 10,
+        marginBottom: 30,
     },
     buttonContainer: {
         alignSelf: "center",

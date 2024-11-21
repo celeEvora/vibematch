@@ -1,35 +1,27 @@
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 type GradientButtonProps = {
-    onPress: () => void;
     text: string;
     colors?: [string, string, ...string[]];
     rounded?: boolean;
 };
 
-export function GradientButton({
-    onPress,
-    text,
-    colors,
-    rounded,
-}: GradientButtonProps) {
+export function GradientButton({ text, colors, rounded }: GradientButtonProps) {
     return (
-        <TouchableOpacity onPress={onPress}>
-            <LinearGradient
-                // colors={["#4c669f", "#3b5998", "#192f6a"]}
-                colors={colors || ["#ab74aa", "#e28e6e"]}
-                // colors={["#e0c6ff", "#6009c8"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={[
-                    styles.button,
-                    rounded ? { borderRadius: 30 } : { borderRadius: 10 },
-                ]}
-            >
-                <Text style={styles.textButton}>{text}</Text>
-            </LinearGradient>
-        </TouchableOpacity>
+        <LinearGradient
+            // colors={["#4c669f", "#3b5998", "#192f6a"]}
+            colors={colors || ["#ab74aa", "#e28e6e"]}
+            // colors={["#e0c6ff", "#6009c8"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={[
+                styles.button,
+                rounded ? { borderRadius: 30 } : { borderRadius: 10 },
+            ]}
+        >
+            <Text style={styles.textButton}>{text}</Text>
+        </LinearGradient>
     );
 }
 
