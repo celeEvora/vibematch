@@ -14,7 +14,7 @@ import Octicons from "@expo/vector-icons/Octicons";
 const user = {
     name: "John Doe",
     email: "joh@example.com",
-    avatar: require("../../assets/img/avatar.jpg"),
+    avatar: require("../../assets/img/avatars/avatar5.jpeg"),
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet sodales est. Nullam nec purus eu nunc ultricies posuere. Sed at justo auctor, fermentum mi nec, maximus libero. Nullam nec purus eu nunc ultricies posuere. Sed at justo auctor, fermentum mi nec, maximus libero. Nullam nec purus eu nunc ultricies posuere. Sed at justo",
     birthDate: "1990-01-01",
     gender: "male",
@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     avatar: {
-        width: 150,
-        height: 150,
+        width: 135,
+        height: 135,
         aspectRatio: 1,
         borderRadius: 100,
         // borderWidth: 3,

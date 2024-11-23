@@ -15,31 +15,31 @@ const chats = [
         id: 1,
         name: "John Doe",
         message: "Hey, how are you?",
-        image: require("@/assets/img/avatar.jpg"),
+        image: require("@/assets/img/avatars/avatar1.jpeg"),
     },
     {
         id: 2,
         name: "Jane Doe",
         message: "Hey, how are you?",
-        image: require("@/assets/img/avatar.jpg"),
+        image: require("@/assets/img/avatars/avatar2.jpeg"),
     },
     {
         id: 3,
         name: "Celeste Evora",
         message: "Hey, how are you?",
-        image: require("@/assets/img/avatar.jpg"),
+        image: require("@/assets/img/avatars/avatar3.jpeg"),
     },
     {
         id: 4,
         name: "Michelle Evora",
         message: "Hey, how are you?",
-        image: require("@/assets/img/avatar.jpg"),
+        image: require("@/assets/img/avatars/avatar4.jpg"),
     },
     {
         id: 5,
         name: "Valeria Avalos",
         message: "Hey, how are you?",
-        image: require("@/assets/img/avatar.jpg"),
+        image: require("@/assets/img/avatars/avatar5.jpeg"),
     },
 ];
 

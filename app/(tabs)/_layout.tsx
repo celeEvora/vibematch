@@ -1,6 +1,8 @@
 // import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Tabs } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function TabLayout() {
     return (
@@ -22,7 +24,12 @@ export default function TabLayout() {
                     tabBarInactiveTintColor: "#cccbcd",
                     // tabBarShowLabel: false,
                     tabBarIcon: ({ color }) => (
-                        <AntDesign name="home" size={24} color={color} />
+                        // <AntDesign name="home" size={24} color={color} />
+                        <MaterialCommunityIcons
+                            name="heart-multiple-outline"
+                            size={26}
+                            color={color}
+                        />
                     ),
                 }}
             />
