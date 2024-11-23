@@ -1,11 +1,5 @@
 import { Link } from "expo-router";
-import {
-    View,
-    Text,
-    StyleSheet,
-    Pressable,
-    TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { TopCircleGradient } from "@/components/TopCircleGradient";
 import { GradientButton } from "@/components/GradientButton";
 
