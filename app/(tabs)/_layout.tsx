@@ -1,7 +1,6 @@
 // import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Tabs } from "expo-router";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function TabLayout() {
@@ -16,7 +15,7 @@ export default function TabLayout() {
             }}
         >
             <Tabs.Screen
-                name="index"
+                name="(home)"
                 options={{
                     title: "Home",
                     headerShown: false,

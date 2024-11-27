@@ -17,7 +17,7 @@ export default function ChatDetails() {
                 user: {
                     _id: 2,
                     name: "React Native",
-                    avatar: require("../../../assets/img/avatars/avatar1.jpeg"),
+                    avatar: require("@/assets/img/avatars/avatar1.jpeg"),
                 },
             },
         ]);

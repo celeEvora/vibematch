@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import {
     View,
     Text,
@@ -11,6 +11,7 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Swiper, type SwiperCardRefType } from "rn-swiper-list";
 import { AntDesign } from "@expo/vector-icons";
+import { useRouter, Link } from "expo-router";
 
 type DataType = {
     id: number;
@@ -26,44 +27,49 @@ const DATA = [
         name: "Samantha Melendez",
         age: 27,
         location: "New York, NY",
-        image: require("../../assets/img/avatars/avatar1.jpeg"),
+        image: require("@/assets/img/avatars/avatar1.jpeg"),
     },
     {
         id: 2,
         name: "Alex Smith",
         age: 25,
         location: "Los Angeles, CA",
-        image: require("../../assets/img/avatars/avatar2.jpeg"),
+        image: require("@/assets/img/avatars/avatar2.jpeg"),
     },
     {
         id: 3,
         name: "John Doe",
         age: 30,
         location: "Chicago, IL",
-        image: require("../../assets/img/avatars/avatar5.jpeg"),
+        image: require("@/assets/img/avatars/avatar5.jpeg"),
     },
     {
         id: 4,
         name: "Mia Johnson",
         age: 22,
         location: "Houston, TX",
-        image: require("../../assets/img/avatars/avatar3.jpeg"),
+        image: require("@/assets/img/avatars/avatar3.jpeg"),
     },
     {
         id: 5,
         name: "Sophia Williams",
         age: 29,
         location: "Philadelphia, PA",
-        image: require("../../assets/img/avatars/avatar4.jpg"),
+        image: require("@/assets/img/avatars/avatar4.jpg"),
     },
 ];
 
 export default function Home() {
     const ref = useRef<SwiperCardRefType>();
+    const router = useRouter(); // Agrega el router para manejar la navegación
 
     const renderCard = useCallback((data: DataType) => {
         return (
-            <View style={styles.renderCardContainer}>
+            <View
+                style={styles.renderCardContainer}
+                //TODO: ADD A BUTTON INSTEAD TO O TO PROFILE
+                // onPress={() => router.push(`/users/${data.id}`)} // Navega al perfil del usuario
+            >
                 <Image
                     source={data.image}
                     style={styles.renderCardImage}
@@ -177,23 +183,11 @@ export default function Home() {
                     onSwipeRight={(cardIndex) => {
                         console.log("cardIndex", cardIndex);
                     }}
-                    onSwipedAll={() => {
-                        console.log("onSwipedAll");
-                    }}
                     onSwipeLeft={(cardIndex) => {
                         console.log("onSwipeLeft", cardIndex);
                     }}
                     OverlayLabelRight={OverlayLabelRight}
                     OverlayLabelLeft={OverlayLabelLeft}
-                    onSwipeActive={() => {
-                        console.log("onSwipeActive");
-                    }}
-                    onSwipeStart={() => {
-                        console.log("onSwipeStart");
-                    }}
-                    onSwipeEnd={() => {
-                        console.log("onSwipeEnd");
-                    }}
                 />
             </SafeAreaView>
 
