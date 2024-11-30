@@ -23,7 +23,6 @@ export default function EditProfileForm() {
         orientation,
         gender,
         birthDate,
-        countryId,
         profilePicture,
     } = user;
 
@@ -32,13 +31,13 @@ export default function EditProfileForm() {
             firstName: firstName,
             lastName: lastName,
             email: email,
-            bio: bio,
-            orientation: orientation,
-            gender: gender,
-            birthDate: birthDate,
-            countryId: countryId,
         },
     });
+
+    const country = user.country.name;
+    const { getValues } = methods;
+
+    const birthDateFormatted = birthDate.split("T")[0];
 
     const router = useRouter();
     return (
@@ -83,7 +82,7 @@ export default function EditProfileForm() {
                                 ellipsizeMode="tail"
                                 numberOfLines={1}
                             >
-                                {methods.getValues("bio") || "Add a bio..."}
+                                {bio || "Add a bio..."}
                             </Text>
                         </View>
                     </TouchableOpacity>
@@ -94,8 +93,40 @@ export default function EditProfileForm() {
                         <View style={styles.containerExternalInput}>
                             <Text style={styles.label}>Orientation</Text>
                             <Text style={styles.bioPreview}>
-                                {methods.getValues("orientation") ||
-                                    "Add your orientation..."}
+                                {orientation || "Add your orientation..."}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => router.push("/profile/gender")}
+                    >
+                        <View style={styles.containerExternalInput}>
+                            <Text style={styles.label}>Gender</Text>
+                            <Text style={styles.bioPreview}>
+                                {gender || "Add your gender..."}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => router.push("/profile/birthdate")}
+                    >
+                        <View style={styles.containerExternalInput}>
+                            <Text style={styles.label}>Birthdate</Text>
+                            <Text style={styles.bioPreview}>
+                                {birthDateFormatted || "Add your birthdate..."}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => router.push("/profile/country")}
+                    >
+                        <View style={styles.containerExternalInput}>
+                            <Text style={styles.label}>Country</Text>
+                            <Text style={styles.bioPreview}>
+                                {country || "Add your country of origin..."}
                             </Text>
                         </View>
                     </TouchableOpacity>

@@ -13,6 +13,9 @@ export type User = {
 
 export type UserResponse = {
     data: {
-        country: string;
+        country: {
+            name: string;
+            iso2code: string;
+        };
     } & User;
 };

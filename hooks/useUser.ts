@@ -3,7 +3,7 @@ import { me } from "@/services/auth";
 import { User, UserResponse } from "@/types/User";
 
 export type UserHookResponse = {
-    user: User;
+    user: User & { country: { name: string; iso2code: string } };
     mutate: () => void;
     isLoading: boolean;
     isError: boolean;

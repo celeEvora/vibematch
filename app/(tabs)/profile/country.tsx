@@ -1,15 +1,15 @@
 import { useRouter } from "expo-router";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import { FormProvider, useForm, Controller } from "react-hook-form";
+import { View, Text, Button, StyleSheet } from "react-native";
+import { FormProvider, useForm } from "react-hook-form";
 import { useUser } from "@/hooks/useUser";
-import SexualOrientationSelector from "@/components/SexualOrientationSelector";
+import CountrySelector from "@/components/CountrySelector";
 
-export default function EditOrientation() {
+export default function EditCountry() {
     const { user } = useUser();
     const router = useRouter();
     const methods = useForm({
         defaultValues: {
-            orientation: user.orientation,
+            countryId: user.countryId,
         },
     });
 
@@ -17,16 +17,17 @@ export default function EditOrientation() {
         <FormProvider {...methods}>
             <View style={styles.container}>
                 <Text style={styles.label}>
-                    You can change your sexual orientation here 🔥
+                    You can edit your country here 🌎
                 </Text>
 
-                <SexualOrientationSelector name="orientation" />
+                <CountrySelector name="countryId" />
+
                 <View
                     style={{
                         flexDirection: "row",
                         justifyContent: "center",
                         gap: 30,
-                        height: "45%", // TEMPORARY SOLUTION XDXD
+                        height: "10%", // TEMPORARY SOLUTION XDXD
                     }}
                 >
                     <Button title="Cancel" onPress={() => router.back()} />

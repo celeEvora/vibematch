@@ -29,6 +29,12 @@ export default function ProfileLayout() {
                 name="orientation"
                 options={{ title: "Orientation" }}
             />
+
+            <Stack.Screen name="gender" options={{ title: "Gender" }} />
+
+            <Stack.Screen name="birthdate" options={{ title: "Birthdate" }} />
+
+            <Stack.Screen name="country" options={{ title: "Country" }} />
         </Stack>
     );
 }

@@ -2,14 +2,31 @@ import { useRouter } from "expo-router";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { FormProvider, useForm, Controller } from "react-hook-form";
 import { useUser } from "@/hooks/useUser";
-import SexualOrientationSelector from "@/components/SexualOrientationSelector";
+import DateOfBirthPicker from "@/components/DateOfBirthPicker";
 
-export default function EditOrientation() {
+function formatBirthDate(birthDate: {
+    day: string;
+    month: string;
+    year: string;
+}): string {
+    return `${birthDate.year}-${birthDate.month.padStart(
+        2,
+        "0"
+    )}-${birthDate.day.padStart(2, "0")}`;
+}
+
+export default function EditBirthDate() {
     const { user } = useUser();
+    const formattedBirthDate = user.birthDate?.split("T")[0];
+
     const router = useRouter();
     const methods = useForm({
         defaultValues: {
-            orientation: user.orientation,
+            birthDate: {
+                day: formattedBirthDate?.split("-")[2] || "",
+                month: formattedBirthDate?.split("-")[1] || "",
+                year: formattedBirthDate?.split("-")[0] || "",
+            },
         },
     });
 
@@ -17,10 +34,11 @@ export default function EditOrientation() {
         <FormProvider {...methods}>
             <View style={styles.container}>
                 <Text style={styles.label}>
-                    You can change your sexual orientation here 🔥
+                    You can change your date of birth here 📅
                 </Text>
 
-                <SexualOrientationSelector name="orientation" />
+                <DateOfBirthPicker />
+
                 <View
                     style={{
                         flexDirection: "row",
