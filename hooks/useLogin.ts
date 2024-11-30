@@ -2,12 +2,13 @@ import { useState } from "react";
 import { login } from "@/services/auth";
 import { useRouter } from "expo-router";
 import useAuthStore from "@/stores/useAuthStore";
+import { Login, AuthResponse } from "@/types/Auth";
 
 export type LoginResponse = {
     isLoading: boolean;
     isError: any;
     message: string;
-    processLogin: (formData: any) => Promise<void>;
+    processLogin: (formData: Login) => Promise<void>;
 };
 
 export function useLogin(): LoginResponse {
@@ -17,7 +18,7 @@ export function useLogin(): LoginResponse {
     const router = useRouter();
     const loginStore = useAuthStore((state) => state.login);
 
-    const processLogin = async (formData) => {
+    const processLogin = async (formData: Login) => {
         setIsLoading(true);
         setIsError(null);
         setMessage("");

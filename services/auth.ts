@@ -1,4 +1,5 @@
 import request from "@/utils/networking/api";
+import { Login, AuthResponse } from "@/types/Auth";
 
 export async function register(formData: FormData) {
     const { data: json } = await request.post("/auth/register", formData, {
@@ -9,7 +10,7 @@ export async function register(formData: FormData) {
     return json;
 }
 
-export async function login(formData: FormData) {
+export async function login(formData: Login): Promise<AuthResponse> {
     const { data: json } = await request.post("/auth/login", formData);
     return json;
 }
