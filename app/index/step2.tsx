@@ -1,9 +1,5 @@
-import { View, Text } from "react-native";
+import Step2View from "@/views/RegisterView/Step2View";
 
 export default function Step2() {
-    return (
-        <View>
-            <Text>Step 2</Text>
-        </View>
-    );
+    return <Step2View />;
 }

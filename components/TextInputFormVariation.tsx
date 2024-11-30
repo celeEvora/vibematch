@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { View, TextInput, Text, StyleSheet } from "react-native";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -9,7 +9,7 @@ type TextInputFormProps = {
     rules?: any;
 };
 
-export default function TextInputForm({
+export default function TextInputFormVariation({
     name,
     label,
     placeholder,

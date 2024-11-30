@@ -1,4 +1,4 @@
-import { KeyboardAvoidingViewContainer } from "@/components/KeyboardAvoidingViewContainer";
+import { KeyboardAvoidingViewContainer } from "./KeyboardAvoidingViewContainer";
 import { TopCircleGradient } from "@/components/TopCircleGradient";
 
 type AuthLayoutProps = {

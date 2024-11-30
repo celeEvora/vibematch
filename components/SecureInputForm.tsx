@@ -1,6 +1,7 @@
-import { useRef } from "react";
-import { View, TextInput, Text, StyleSheet } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
 import { Controller, useFormContext } from "react-hook-form";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 type TextInputFormProps = {
     name: string;
@@ -9,7 +10,7 @@ type TextInputFormProps = {
     rules?: any;
 };
 
-export default function TextInputForm({
+export default function SecureInputForm({
     name,
     label,
     placeholder,
@@ -21,12 +22,18 @@ export default function TextInputForm({
         formState: { errors },
     } = useFormContext();
 
+    const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+
     function focusInput() {
         inputRef.current?.focus();
     }
 
     return (
-        <View>
+        <View
+            style={{
+                position: "relative",
+            }}
+        >
             <View
                 style={[
                     styles.container,
@@ -48,6 +55,7 @@ export default function TextInputForm({
                             onChangeText={onChange}
                             value={value}
                             placeholder={placeholder}
+                            secureTextEntry={secureTextEntry}
                         />
                     )}
                     name={name}
@@ -59,6 +67,23 @@ export default function TextInputForm({
             <Text style={{ color: "#ab1212", fontSize: 12 }}>
                 {errors[name]?.message ? errors[name].message.toString() : ""}
             </Text>
+
+            <Pressable
+                style={{
+                    position: "absolute",
+                    top: "50%",
+                    transform: [{ translateY: -20 }],
+                    right: 20,
+                    zIndex: 1,
+                }}
+                onPress={() => setSecureTextEntry(!secureTextEntry)}
+            >
+                <Ionicons
+                    name={secureTextEntry ? "eye-off" : "eye"}
+                    size={28}
+                    color="#d1d1d1"
+                />
+            </Pressable>
         </View>
     );
 }
@@ -66,7 +91,6 @@ export default function TextInputForm({
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#f6f7f9",
-        // backgroundColor: "#faf7fc",
         borderRadius: 10,
         paddingVertical: 12,
         paddingHorizontal: 20,

@@ -6,12 +6,16 @@ import {
     Platform,
     ScrollView,
 } from "react-native";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export function KeyboardAvoidingViewContainer({ children }: any) {
+    const headerHeight = useHeaderHeight();
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.container}
+            keyboardVerticalOffset={headerHeight}
         >
             {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
             <ScrollView

@@ -1,5 +1,5 @@
-import RegisterView from "@/views/RegisterView";
+import Step1View from "@/views/RegisterView/Step1View";
 
 export default function Step1() {
-    return <RegisterView />;
+    return <Step1View />;
 }
