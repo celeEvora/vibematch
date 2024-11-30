@@ -50,7 +50,7 @@ export default function Step2View() {
 
         setData(configuredData);
 
-        router.push("/step3");
+        router.push("./step3");
     }
 
     return (

@@ -18,7 +18,7 @@ export default function Step1View() {
 
     function submitForm(formData: Partial<User>) {
         setData(formData);
-        router.push("/step2");
+        router.push("./register/step2");
     }
 
     return (

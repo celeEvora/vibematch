@@ -1,6 +1,9 @@
 import { useState } from "react";
 // TODO: Import service
+import { register } from "@/services/auth";
 import type { RegisterFormType } from "@/stores/useRegisterStore";
+import useAuthStore from "@/stores/useAuthStore";
+import { useRouter } from "expo-router";
 
 export type RegisterResponse = {
     isLoading: boolean;
@@ -38,9 +41,9 @@ function configureMultiPartData(formData: RegisterFormType): FormData {
 
         requestData.append("profilePicture", {
             uri: formData.profilePicture,
+            type: `image/${fileType}`, // Type MIME
             name: `profile.${fileType}`,
-            type: `image/${fileType}`,
-        } as any);
+        } as unknown as Blob);
     }
 
     return requestData;
@@ -50,6 +53,8 @@ export function useRegister(): RegisterResponse {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<any>(null);
     const [message, setMessage] = useState<string>("");
+    const router = useRouter();
+    const login = useAuthStore((state) => state.login);
 
     const processRegister = async (
         formData: RegisterFormType
@@ -60,12 +65,20 @@ export function useRegister(): RegisterResponse {
 
         try {
             const requestData = configureMultiPartData(formData);
-            // const response = await registerService(requestData);
-            // if (!response) {
-            //     return;
-            // }
-            // setMessage("User registered successfully");
+            const response = await register(requestData);
+            if (!response) {
+                return;
+            }
+
+            const data = await response;
+            const { data: userData } = data;
+
+            await login(userData.user, userData.token);
+
+            setMessage("User registered successfully");
+            router.replace("/");
         } catch (error) {
+            console.log("error:", error);
             setIsError(error);
         } finally {
             setIsLoading(false);

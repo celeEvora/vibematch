@@ -1,5 +1,11 @@
 import { useRouter } from "expo-router";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+    Text,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    ActivityIndicator,
+} from "react-native";
 import { FormProvider, useForm } from "react-hook-form";
 import ProfilePictureSelector from "@/components/ProfilePictureSelector";
 import { useRegisterStore, RegisterFormType } from "@/stores/useRegisterStore";
@@ -9,20 +15,19 @@ import RegisterLayout from "./components/RegisterLayout";
 export default function Step6View() {
     const router = useRouter();
     const { data, setData } = useRegisterStore();
-    const { processRegister } = useRegister();
+    const { processRegister, isLoading } = useRegister();
 
     const methods = useForm({
         defaultValues: data,
     });
     const { handleSubmit } = methods;
 
-    function submitForm(formData: Partial<RegisterFormType>) {
+    async function submitForm(formData: Partial<RegisterFormType>) {
         setData(formData);
         // router.push("/success");
 
         const { data: currentData } = useRegisterStore.getState();
-        // processRegister(currentData as RegisterFormType);
-        console.log(currentData);
+        await processRegister(currentData as RegisterFormType);
     }
 
     return (
@@ -31,6 +36,22 @@ export default function Step6View() {
             subtitle="Upload a profile picture"
             step={6}
         >
+            {isLoading && (
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        zIndex: 100,
+                        height: "100%",
+                    }}
+                >
+                    <ActivityIndicator size="large" color="#3e1732" />
+                </View>
+            )}
             <FormProvider {...methods}>
                 <View style={styles.inputsContainer}>
                     <ProfilePictureSelector name={"profilePicture"} />

@@ -10,3 +10,9 @@ export type User = {
     birthDate: string;
     countryId: string;
 };
+
+export type UserResponse = {
+    data: {
+        country: string;
+    } & User;
+};

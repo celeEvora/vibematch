@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import {
     View,
     Text,
@@ -61,7 +61,7 @@ const DATA = [
 
 export default function Home() {
     const ref = useRef<SwiperCardRefType>();
-    const router = useRouter(); // Agrega el router para manejar la navegación
+    const router = useRouter();
 
     const renderCard = useCallback((data: DataType) => {
         return (

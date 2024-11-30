@@ -4,13 +4,16 @@ import TextInputForm from "@/components/TextInputForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { GradientButton } from "@/components/GradientButton";
 import { AuthLayout } from "@/components/AuthLayout";
+import { useLogin } from "@/hooks/useLogin";
 
 export default function LoginView() {
+    const { processLogin } = useLogin();
+
     const methods = useForm();
     const { handleSubmit } = methods;
 
-    function submitForm(data: any) {
-        console.log(data);
+    async function submitForm(data: any) {
+        await processLogin(data);
     }
 
     return (
