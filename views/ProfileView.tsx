@@ -6,13 +6,12 @@ import {
     TouchableOpacity,
     ScrollView,
     SafeAreaView,
-    Button,
 } from "react-native";
 import Octicons from "@expo/vector-icons/Octicons";
 import { useUser } from "@/hooks/useUser";
 import { calculateAge } from "@/helpers/calculateAge";
 import { capilizeWord } from "@/helpers/capitalizeWord";
-import useAuthStore from "@/stores/useAuthStore";
+import { useRouter } from "expo-router";
 
 export default function ProfileView() {
     const { user } = useUser();
@@ -27,7 +26,7 @@ export default function ProfileView() {
         birthDate,
     } = user;
 
-    const logout = useAuthStore((state) => state.logout);
+    const router = useRouter();
 
     return (
         <ScrollView style={styles.container}>
@@ -67,6 +66,7 @@ export default function ProfileView() {
                     <View style={styles.buttonsHeaderContainer}>
                         <View style={styles.buttonTextIconContainer}>
                             <TouchableOpacity
+                                onPress={() => router.push("/profile/settings")}
                                 style={styles.buttonHeaderContainer}
                             >
                                 <Octicons
@@ -104,6 +104,9 @@ export default function ProfileView() {
 
                         <View style={styles.buttonTextIconContainer}>
                             <TouchableOpacity
+                                onPress={() =>
+                                    router.push("/profile/edit-profile")
+                                }
                                 style={styles.buttonHeaderContainer}
                             >
                                 <Octicons
@@ -156,13 +159,6 @@ export default function ProfileView() {
                 >
                     <Text style={styles.matchText}>Start Matching</Text>
                 </TouchableOpacity>
-
-                <Button
-                    title="Logout"
-                    onPress={async () => {
-                        await logout();
-                    }}
-                />
             </View>
         </ScrollView>
     );

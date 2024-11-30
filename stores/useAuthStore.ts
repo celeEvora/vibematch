@@ -2,7 +2,17 @@ import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "@/types/User";
 
-const useAuthStore = create((set, get) => ({
+type AuthStore = {
+    user: User | null;
+    token: string | null;
+    isAuthLoaded: boolean;
+
+    login: (userData: User, token: string) => Promise<void>;
+    logout: () => Promise<void>;
+    loadAuth: () => Promise<void>;
+};
+
+const useAuthStore = create<AuthStore>((set, get) => ({
     user: null,
     token: null,
     isAuthLoaded: false, // This is used to determine if the app is ready to render
@@ -13,10 +23,8 @@ const useAuthStore = create((set, get) => ({
     },
 
     logout: async () => {
-        console.log("Logout called");
         await AsyncStorage.removeItem("authToken"); // Remove token from AsyncStorage
         set({ user: null, token: null });
-        console.log("Logout completed, state reset");
     },
 
     // This function is called when the app starts

@@ -19,6 +19,7 @@ function configureMultiPartData(formData: RegisterFormType): FormData {
     requestData.append("firstName", formData.firstName);
     requestData.append("lastName", formData.lastName);
     requestData.append("email", formData.email);
+    requestData.append("bio", formData.bio);
     requestData.append("password", formData.password);
     requestData.append("orientation", formData.orientation);
     requestData.append("gender", formData.gender);

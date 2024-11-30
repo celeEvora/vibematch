@@ -24,10 +24,10 @@ export default function Step6View() {
 
     async function submitForm(formData: Partial<RegisterFormType>) {
         setData(formData);
-        // router.push("/success");
 
         const { data: currentData } = useRegisterStore.getState();
         await processRegister(currentData as RegisterFormType);
+        // TODO: Delete the store data after the registration is successful
     }
 
     return (
@@ -39,6 +39,11 @@ export default function Step6View() {
             {isLoading && (
                 <View
                     style={{
+                        // ...StyleSheet.absoluteFillObject,
+                        // backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        // justifyContent: "center",
+                        // alignItems: "center",
+                        // zIndex: 10,
                         flex: 1,
                         justifyContent: "center",
                         alignItems: "center",
@@ -59,6 +64,7 @@ export default function Step6View() {
 
                 <TouchableOpacity
                     style={styles.buttonContainer}
+                    disabled={isLoading}
                     onPress={() => handleSubmit(submitForm)()}
                 >
                     <Text style={styles.buttonText}>NEXT</Text>
