@@ -22,7 +22,7 @@ import {
     BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { checkPermissions, tookPhoto, pickImage } from "@/utils/photoUtils";
-import { useUpdateUser } from "@/hooks/useUpdateUser";
+import { useUpdateProfilePicture } from "@/hooks/useUpdateProfilePicture";
 
 export default function ProfileView() {
     const { user } = useUser();
@@ -39,7 +39,8 @@ export default function ProfileView() {
     } = user;
 
     const [image, setImage] = useState<string | null>(null);
-    const { processUpdateProfilePicture, isLoading } = useUpdateUser();
+    const { processUpdateProfilePicture, isLoading } =
+        useUpdateProfilePicture();
 
     const router = useRouter();
 

@@ -1,8 +1,19 @@
 import { useRouter } from "expo-router";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import { FormProvider, useForm, Controller } from "react-hook-form";
+import { View, Text, StyleSheet } from "react-native";
+import { FormProvider, useForm } from "react-hook-form";
 import { useUser } from "@/hooks/useUser";
 import DateOfBirthPicker from "@/components/DateOfBirthPicker";
+import { useUpdateUser } from "@/hooks/useUpdateUser";
+import { User } from "@/types/User";
+import FormButton from "@/views/Profile/components/FormButton";
+
+type FormData = {
+    birthDate: {
+        day: string;
+        month: string;
+        year: string;
+    };
+};
 
 function formatBirthDate(birthDate: {
     day: string;
@@ -30,6 +41,21 @@ export default function EditBirthDate() {
         },
     });
 
+    const {
+        handleSubmit,
+        formState: { isDirty },
+    } = methods;
+    const { processUpdateUser, isLoading } = useUpdateUser();
+
+    async function handleSave(formData: FormData) {
+        const birthDate = formatBirthDate(formData.birthDate);
+        await processUpdateUser(parseInt(user.id), {
+            birthDate: birthDate.toString(),
+        } as Partial<User>);
+
+        router.back();
+    }
+
     return (
         <FormProvider {...methods}>
             <View style={styles.container}>
@@ -44,11 +70,19 @@ export default function EditBirthDate() {
                         flexDirection: "row",
                         justifyContent: "center",
                         gap: 30,
-                        height: "45%", // TEMPORARY SOLUTION XDXD
                     }}
                 >
-                    <Button title="Cancel" onPress={() => router.back()} />
-                    <Button title="Save" onPress={() => router.back()} />
+                    <FormButton
+                        text="Cancel"
+                        onPress={() => router.back()}
+                        backgroundColor="#cdcdcd"
+                    />
+
+                    <FormButton
+                        text="Save"
+                        onPress={handleSubmit(handleSave)}
+                        disabled={isLoading || !isDirty}
+                    />
                 </View>
             </View>
         </FormProvider>
@@ -63,7 +97,6 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 16,
-        // fontWeight: "bold",
         marginBottom: 50,
     },
 });

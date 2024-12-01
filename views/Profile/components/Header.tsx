@@ -22,7 +22,7 @@ import {
     BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { checkPermissions, tookPhoto, pickImage } from "@/utils/photoUtils";
-import { useUpdateUser } from "@/hooks/useUpdateUser";
+import { useUpdateUser } from "@/hooks/useUpdateProfilePicture";
 
 export default function Header() {
     const { user } = useUser();

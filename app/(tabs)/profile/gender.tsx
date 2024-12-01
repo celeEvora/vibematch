@@ -1,8 +1,11 @@
 import { useRouter } from "expo-router";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import { FormProvider, useForm, Controller } from "react-hook-form";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { FormProvider, useForm } from "react-hook-form";
 import { useUser } from "@/hooks/useUser";
 import GenderSelector from "@/components/GenderSelector";
+import { useUpdateUser } from "@/hooks/useUpdateUser";
+import { User } from "@/types/User";
+import FormButton from "@/views/Profile/components/FormButton";
 
 export default function EditGender() {
     const { user } = useUser();
@@ -13,6 +16,17 @@ export default function EditGender() {
         },
     });
 
+    const {
+        handleSubmit,
+        formState: { isDirty },
+    } = methods;
+    const { processUpdateUser, isLoading } = useUpdateUser();
+
+    async function handleSave(formData: Pick<User, "gender">) {
+        await processUpdateUser(parseInt(user.id), formData);
+        router.back();
+    }
+
     return (
         <FormProvider {...methods}>
             <View style={styles.container}>
@@ -20,18 +34,50 @@ export default function EditGender() {
                     You can change your gender here ⚤
                 </Text>
 
-                <GenderSelector name="gender" />
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        marginBottom: 50,
+                    }}
+                >
+                    <GenderSelector name="gender" />
+
+                    {isLoading && (
+                        <View
+                            style={{
+                                position: "absolute",
+                                left: 0,
+                                right: 0,
+                                justifyContent: "center",
+                                zIndex: 100,
+                                height: "100%",
+                            }}
+                        >
+                            <ActivityIndicator size="large" color="#3e1732" />
+                        </View>
+                    )}
+                </View>
 
                 <View
                     style={{
                         flexDirection: "row",
                         justifyContent: "center",
                         gap: 30,
-                        height: "45%", // TEMPORARY SOLUTION XDXD
                     }}
                 >
-                    <Button title="Cancel" onPress={() => router.back()} />
-                    <Button title="Save" onPress={() => router.back()} />
+                    <FormButton
+                        text="Cancel"
+                        onPress={() => router.back()}
+                        backgroundColor="#cdcdcd"
+                    />
+
+                    <FormButton
+                        text="Save"
+                        onPress={() => handleSubmit(handleSave)()}
+                        backgroundColor="#d07ea6"
+                        disabled={isLoading || !isDirty}
+                    />
                 </View>
             </View>
         </FormProvider>
@@ -46,7 +92,6 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 16,
-        // fontWeight: "bold",
         marginBottom: 50,
     },
 });

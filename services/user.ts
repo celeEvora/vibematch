@@ -1,6 +1,7 @@
 import request from "@/utils/networking/api";
+import { User } from "@/types/User";
 
-export async function updateUser(id: number, formData: FormData) {
+export async function updateUser(id: number, formData: Partial<User>) {
     const { data: json } = await request.patch(`/user/${id}`, formData);
     return json;
 }
