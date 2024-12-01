@@ -30,6 +30,14 @@ export default function ChatsLayout() {
                     headerTintColor: "#fff",
                 })}
             />
+
+            <Stack.Screen
+                name="create-chat"
+                options={{
+                    headerTitle: "New Chat",
+                    presentation: "modal",
+                }}
+            />
         </Stack>
     );
 }

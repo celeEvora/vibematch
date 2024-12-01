@@ -43,7 +43,7 @@ export default function ChatDetails() {
                             {...props}
                             wrapperStyle={{
                                 right: {
-                                    backgroundColor: "#e28e6e",
+                                    backgroundColor: "#a885b2",
                                     borderTopLeftRadius: 20,
                                     borderTopRightRadius: 20,
                                     borderBottomRightRadius: 0,

@@ -54,6 +54,7 @@ export default function Chats() {
     return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity
+                onPress={() => router.push("/chats/create-chat")}
                 style={{
                     position: "absolute",
                     right: 40,
@@ -108,7 +109,6 @@ export default function Chats() {
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
                         <Pressable
-                            // onPress={() => router.push(`/chats/${item.id}`)}
                             onPress={() =>
                                 router.push({
                                     pathname: `/chats/${item.id}`,

@@ -10,26 +10,27 @@ import {
 import { useRouter } from "expo-router";
 import { useMatchesForUser } from "@/hooks/useMatchesForUser";
 import { useUser } from "@/hooks/useUser";
-import useSearchUser from "@/hooks/useSearchUser";
 import SearchBarUser from "@/components/SearchBarUser";
+import useSearchUser from "@/hooks/useSearchUser";
 
-export default function MatchesView() {
+export default function CreateChatView() {
+    const router = useRouter();
     const { user } = useUser();
     const { matches } = useMatchesForUser(user.id);
     const { search, setSearch, filterMatches } = useSearchUser();
-    const router = useRouter();
 
     const filteredMatches = filterMatches(search, matches);
 
     return (
-        <>
+        <View>
             <SearchBarUser setSearch={setSearch} />
+
             <FlatList
                 data={filteredMatches}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <Pressable
-                        // onPress={() => router.navigate("Chat", { id: item.id })}
+                        onPress={() => router.replace(`chats/${item.id}`)}
                         style={styles.container}
                     >
                         <View style={styles.subContainer}>
@@ -46,7 +47,7 @@ export default function MatchesView() {
                     </Pressable>
                 )}
             />
-        </>
+        </View>
     );
 }
 
