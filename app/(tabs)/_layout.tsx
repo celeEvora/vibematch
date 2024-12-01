@@ -8,9 +8,9 @@ export default function TabLayout() {
         <Tabs
             screenOptions={{
                 tabBarActiveTintColor: "blue",
-                tabBarShowLabel: false,
+                // tabBarShowLabel: false,
                 tabBarStyle: {
-                    height: 65,
+                    height: 75,
                 },
             }}
         >
@@ -19,9 +19,8 @@ export default function TabLayout() {
                 options={{
                     title: "Home",
                     headerShown: false,
-                    tabBarActiveTintColor: "#e28e6e",
+                    tabBarActiveTintColor: "#a885b2",
                     tabBarInactiveTintColor: "#cccbcd",
-                    // tabBarShowLabel: false,
                     tabBarIcon: ({ color }) => (
                         // <AntDesign name="home" size={24} color={color} />
                         <MaterialCommunityIcons
@@ -38,9 +37,8 @@ export default function TabLayout() {
                 options={{
                     title: "Chats",
                     headerShown: false,
-                    tabBarActiveTintColor: "#e28e6e",
+                    tabBarActiveTintColor: "#a885b2",
                     tabBarInactiveTintColor: "#cccbcd",
-                    // tabBarShowLabel: false,
                     tabBarIcon: ({ color }) => (
                         <AntDesign name="message1" size={24} color={color} />
                     ),
@@ -51,10 +49,8 @@ export default function TabLayout() {
                 name="notifications"
                 options={{
                     title: "Notifications",
-                    // headerShown: false,
-                    tabBarActiveTintColor: "#e28e6e",
+                    tabBarActiveTintColor: "#a885b2",
                     tabBarInactiveTintColor: "#cccbcd",
-                    // tabBarShowLabel: false,
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
                             name="bell-outline"
@@ -70,9 +66,8 @@ export default function TabLayout() {
                 options={{
                     title: "Profile",
                     headerShown: false,
-                    tabBarActiveTintColor: "#e28e6e",
+                    tabBarActiveTintColor: "#a885b2",
                     tabBarInactiveTintColor: "#cccbcd",
-                    // tabBarShowLabel: false,
                     tabBarIcon: ({ color }) => (
                         <AntDesign name="user" size={24} color={color} />
                     ),

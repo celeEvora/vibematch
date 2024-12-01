@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "#f7f6fa",
     },
     buttonsContainer: {
         flexDirection: "row",

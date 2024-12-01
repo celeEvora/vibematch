@@ -16,19 +16,16 @@ export default function ChatsLayout() {
                 name="index"
                 options={{
                     title: "Chats",
-                    headerShown: false,
+                    // headerShown: false,
                 }}
             />
 
             <Stack.Screen
                 name="[id]"
-                // options={{
-                //     title: "Chat Details",
-                // }}
                 options={({ route }: any) => ({
                     headerTitle: route.params?.name || "Chat",
                     headerStyle: {
-                        backgroundColor: "#e28e6e",
+                        backgroundColor: "#a885b2",
                     },
                     headerTintColor: "#fff",
                 })}

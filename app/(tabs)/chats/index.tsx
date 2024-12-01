@@ -5,10 +5,13 @@ import {
     SafeAreaView,
     FlatList,
     Pressable,
+    TouchableOpacity,
 } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { Chat } from "@/components/Chat";
+import MatchesView from "@/views/Matches/MatchesView";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const chats = [
     {
@@ -43,11 +46,6 @@ const chats = [
     },
 ];
 
-const matches = [
-    { id: 1, name: "Alice", image: require("@/assets/img/avatar.jpg") },
-    { id: 2, name: "Bob", image: require("@/assets/img/avatar.jpg") },
-];
-
 export default function Chats() {
     const [view, setView] = useState("Messages");
 
@@ -55,6 +53,31 @@ export default function Chats() {
 
     return (
         <SafeAreaView style={styles.container}>
+            <TouchableOpacity
+                style={{
+                    position: "absolute",
+                    right: 40,
+                    bottom: 40,
+                    zIndex: 1,
+                    backgroundColor: "#fff",
+                    padding: 15,
+                    borderRadius: 50,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 1,
+                    },
+                    shadowOpacity: 0.05,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                }}
+            >
+                <MaterialCommunityIcons
+                    name="chat-plus-outline"
+                    size={30}
+                    color="#a885b2"
+                />
+            </TouchableOpacity>
             <View style={styles.menuBar}>
                 <Pressable onPress={() => setView("Messages")}>
                     <Text
@@ -66,9 +89,7 @@ export default function Chats() {
                         Messages
                     </Text>
                 </Pressable>
-                <View
-                    style={{ width: 2, height: 25, backgroundColor: "#f0f0f0" }}
-                />
+                <View style={{ width: 2, height: 25 }} />
                 <Pressable onPress={() => setView("Matches")}>
                     <Text
                         style={[
@@ -101,16 +122,7 @@ export default function Chats() {
                     style={styles.chats}
                 />
             ) : (
-                <FlatList
-                    data={matches}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.matchCard}>
-                            <Text>{item.name}</Text>
-                        </View>
-                    )}
-                    style={styles.chats}
-                />
+                <MatchesView />
             )}
         </SafeAreaView>
     );
@@ -119,16 +131,15 @@ export default function Chats() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "#f7f6fa",
     },
     menuBar: {
         flexDirection: "row",
         justifyContent: "space-around",
-        width: "90%",
-        padding: 10,
-        // marginHorizontal: 20,
+        width: "100%",
+        paddingHorizontal: 10,
+        paddingVertical: 15,
         backgroundColor: "#fff",
         borderBottomWidth: 2,
         borderBottomColor: "#f0f0f0",
@@ -143,14 +154,6 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     activeTab: {
-        color: "#e28e6e",
-    },
-    matchCard: {
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 10,
-        backgroundColor: "#f9f9f9",
-        borderBottomWidth: 1,
-        borderBottomColor: "#f0f0f0",
+        color: "#a885b2",
     },
 });

@@ -16,9 +16,39 @@ export function Chat({ messageData }: ChatProps) {
         <View style={styles.container}>
             <Image source={image} style={styles.avatar} />
 
-            <View style={styles.contentContainer}>
-                <Text>{name}</Text>
-                <Text>{message}</Text>
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#f0f0f0",
+                    paddingBottom: 22,
+                    paddingTop: 12,
+                    height: "100%",
+                    width: "80%",
+                }}
+            >
+                <View style={styles.contentContainer}>
+                    <Text
+                        style={{
+                            fontWeight: 600,
+                            fontSize: 16,
+                            marginBottom: 5,
+                        }}
+                    >
+                        {name}
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 15,
+                            color: "#666",
+                        }}
+                    >
+                        {message}
+                    </Text>
+                </View>
             </View>
         </View>
     );
@@ -31,16 +61,20 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         marginBottom: 10,
-        backgroundColor: "#fff",
-        borderBottomWidth: 1,
-        borderBottomColor: "#f0f0f0",
-        paddingBottom: 10,
+        // borderBottomWidth: 1,
+        // borderBottomColor: "#f0f0f0",
+        // paddingBottom: 10,
     },
     avatar: {
-        width: 60,
-        height: 60,
+        width: 65,
+        height: 65,
         borderRadius: 50,
-        marginRight: 10,
+        marginRight: 15,
     },
-    contentContainer: {},
+    contentContainer: {
+        // borderBottomWidth: 1,
+        // borderBottomColor: "#f0f0f0",
+        // paddingBottom: 10,
+        // width: "80%",
+    },
 });

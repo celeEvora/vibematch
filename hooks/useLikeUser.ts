@@ -3,6 +3,7 @@ import { likeUser } from "@/services/matches";
 import { LikeUser } from "@/types/Match";
 import { useUser } from "./useUser";
 import { useLikesForUser } from "./useLikesForUser";
+import { useMatchesForUser } from "./useMatchesForUser";
 
 export type LikeUserResponse = {
     isLoading: boolean;
@@ -17,6 +18,7 @@ export function useLikeUser(): LikeUserResponse {
     const [message, setMessage] = useState<string>("");
     const { user } = useUser();
     const { mutate } = useLikesForUser(user.id);
+    const { mutate: mutateMatches } = useMatchesForUser(user.id);
 
     const processLikeUser = async (formData: LikeUser): Promise<void> => {
         setIsLoading(true);
@@ -27,6 +29,7 @@ export function useLikeUser(): LikeUserResponse {
             await likeUser(formData);
 
             mutate();
+            mutateMatches();
             setMessage("User liked successfully.");
         } catch (error) {
             setIsError(error);

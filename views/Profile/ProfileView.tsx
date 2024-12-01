@@ -54,7 +54,7 @@ export default function ProfileView() {
     async function handleImageUpload(uri: string) {
         try {
             setImage(uri);
-            await processUpdateProfilePicture(parseInt(id), {
+            await processUpdateProfilePicture(id, {
                 profilePicture: uri,
             });
             bottomSheetModalRef.current?.dismiss();
