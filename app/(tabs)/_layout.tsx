@@ -48,6 +48,24 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
+                name="notifications"
+                options={{
+                    title: "Notifications",
+                    // headerShown: false,
+                    tabBarActiveTintColor: "#e28e6e",
+                    tabBarInactiveTintColor: "#cccbcd",
+                    // tabBarShowLabel: false,
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons
+                            name="bell-outline"
+                            size={26}
+                            color={color}
+                        />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
                 name="profile"
                 options={{
                     title: "Profile",

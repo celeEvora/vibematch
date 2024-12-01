@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { likeUser } from "@/services/matches";
 import { LikeUser } from "@/types/Match";
+import { useUser } from "./useUser";
+import { useLikesForUser } from "./useLikesForUser";
 
 export type LikeUserResponse = {
     isLoading: boolean;
@@ -13,6 +15,8 @@ export function useLikeUser(): LikeUserResponse {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<any>(null);
     const [message, setMessage] = useState<string>("");
+    const { user } = useUser();
+    const { mutate } = useLikesForUser(user.id);
 
     const processLikeUser = async (formData: LikeUser): Promise<void> => {
         setIsLoading(true);
@@ -22,6 +26,7 @@ export function useLikeUser(): LikeUserResponse {
         try {
             await likeUser(formData);
 
+            mutate();
             setMessage("User liked successfully.");
         } catch (error) {
             setIsError(error);
