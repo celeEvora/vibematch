@@ -2,6 +2,7 @@ import { useState } from "react";
 import { updateUser } from "@/services/user";
 import { User } from "@/types/User";
 import { useUser } from "./useUser";
+import { usePossibleMatches } from "./usePossibleMatches";
 
 export type UpdateUserResponse = {
     isLoading: boolean;
@@ -14,7 +15,8 @@ export function useUpdateUser(): UpdateUserResponse {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<any>(null);
     const [message, setMessage] = useState<string>("");
-    const { mutate } = useUser();
+    const { user, mutate } = useUser();
+    const { mutate: mutatePossibleMatches } = usePossibleMatches(user.id);
 
     const processUpdateUser = async (
         id: number,
@@ -32,6 +34,7 @@ export function useUpdateUser(): UpdateUserResponse {
             }
 
             mutate();
+            mutatePossibleMatches();
             setMessage("User updated successfully.");
         } catch (error) {
             setIsError(error);

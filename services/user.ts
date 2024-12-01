@@ -18,3 +18,8 @@ export async function updateProfilePicture(id: number, formData: FormData) {
     );
     return json;
 }
+
+export async function getUser(id: number) {
+    const { data: json } = await request.get(`/user/${id}`);
+    return json;
+}

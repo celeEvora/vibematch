@@ -20,7 +20,14 @@ export default function HomeLayout() {
                     },
                 }}
             />
-            <Stack.Screen name="users/[id]" />
+            <Stack.Screen
+                name="users/[id]"
+                options={{
+                    title: "User",
+                    presentation: "modal",
+                    headerShown: false,
+                }}
+            />
         </Stack>
     );
 }

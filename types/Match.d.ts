@@ -7,3 +7,9 @@ export type PossibleMatch = Omit<User, "email" | "password"> & {
 export type MatchResponse = {
     data: PossibleMatch[];
 };
+
+export type LikeUser = {
+    fromUserId: number;
+    toUserId: number;
+    isLike: boolean;
+};

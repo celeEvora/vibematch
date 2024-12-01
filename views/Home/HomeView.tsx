@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useRef, useCallback } from "react";
 import {
     View,
     Text,
@@ -11,11 +11,13 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Swiper, type SwiperCardRefType } from "rn-swiper-list";
 import { AntDesign } from "@expo/vector-icons";
-import { useRouter, Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { usePossibleMatches } from "@/hooks/usePossibleMatches";
 import { PossibleMatch } from "@/types/Match";
 import { calculateAge } from "@/helpers/calculateAge";
 import { useUser } from "@/hooks/useUser";
+import { useLikeUser } from "@/hooks/useLikeUser";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function HomeView() {
     const ref = useRef<SwiperCardRefType>();
@@ -23,14 +25,11 @@ export default function HomeView() {
     const { user } = useUser();
     const { possibleMatches, isLoading, mutate, isValidating } =
         usePossibleMatches(user.id);
+    const { processLikeUser } = useLikeUser();
 
     const renderCard = useCallback((data: PossibleMatch) => {
         return (
-            <View
-                style={styles.renderCardContainer}
-                //TODO: ADD A BUTTON INSTEAD TO O TO PROFILE
-                // onPress={() => router.push(`/users/${data.id}`)} // Navega al perfil del usuario
-            >
+            <View style={styles.renderCardContainer}>
                 <Image
                     source={{
                         uri: data.profilePicture,
@@ -66,6 +65,30 @@ export default function HomeView() {
                         {data.country.name}
                     </Text>
                 </View>
+
+                <Pressable
+                    style={{
+                        position: "absolute",
+                        top: 10,
+                        right: 10,
+                        backgroundColor: "#ffffffaa",
+                        padding: 10,
+                        borderRadius: 8,
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}
+                    onPress={() => router.push(`/users/${data.id}`)}
+                >
+                    <MaterialCommunityIcons
+                        name="account-heart"
+                        size={24}
+                        color="black"
+                    />
+                    <Text style={{ fontWeight: "bold", color: "#333" }}>
+                        Profile
+                    </Text>
+                </Pressable>
             </View>
         );
     }, []);
@@ -143,6 +166,14 @@ export default function HomeView() {
         [possibleMatches.length, mutate, isLoading, isValidating]
     );
 
+    async function likeUser(toUser: PossibleMatch, isLike: boolean) {
+        await processLikeUser({
+            fromUserId: user.id,
+            toUserId: toUser.id,
+            isLike,
+        });
+    }
+
     return (
         <GestureHandlerRootView style={styles.container}>
             <SafeAreaView style={styles.subContainer}>
@@ -158,10 +189,16 @@ export default function HomeView() {
                         renderCard={renderCard}
                         onIndexChange={handleIndexChange}
                         onSwipeRight={(cardIndex) => {
-                            console.log("cardIndex", cardIndex);
+                            const userToLike = possibleMatches[cardIndex];
+                            if (userToLike) {
+                                likeUser(userToLike, true);
+                            }
                         }}
                         onSwipeLeft={(cardIndex) => {
-                            console.log("onSwipeLeft", cardIndex);
+                            const userToLike = possibleMatches[cardIndex];
+                            if (userToLike) {
+                                likeUser(userToLike, false);
+                            }
                         }}
                         OverlayLabelRight={OverlayLabelRight}
                         OverlayLabelLeft={OverlayLabelLeft}
@@ -178,18 +215,6 @@ export default function HomeView() {
                 >
                     <AntDesign name="close" size={25} color="white" />
                 </Pressable>
-
-                {/* <Pressable
-                    style={[
-                        styles.button,
-                        { height: 60, marginHorizontal: 10 },
-                    ]}
-                    onPress={() => {
-                        ref.current?.swipeBack();
-                    }}
-                >
-                    <AntDesign name="reload1" size={24} color="white" />
-                </Pressable> */}
 
                 <Pressable
                     style={styles.buttonRight}
@@ -254,7 +279,7 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         marginHorizontal: 20,
         aspectRatio: 1,
-        backgroundColor: "#3A3D45",
+        backgroundColor: "#cdd5f7",
         elevation: 4,
         justifyContent: "center",
         alignItems: "center",
