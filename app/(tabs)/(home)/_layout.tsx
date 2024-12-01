@@ -5,7 +5,20 @@ export default function HomeLayout() {
         <Stack>
             <Stack.Screen
                 name="index"
-                options={{ title: "Home", headerShown: false }}
+                options={{
+                    title: "VibeMatch",
+                    headerShown: true,
+                    headerLargeTitleStyle: {
+                        color: "#a885b2",
+                        fontSize: 22,
+                        fontWeight: "bold",
+                    },
+                    headerTitleStyle: {
+                        color: "#a885b2",
+                        fontSize: 22,
+                        fontWeight: "bold",
+                    },
+                }}
             />
             <Stack.Screen name="users/[id]" />
         </Stack>
