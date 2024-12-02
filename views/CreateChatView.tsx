@@ -3,7 +3,6 @@ import {
     Text,
     StyleSheet,
     Image,
-    TouchableOpacity,
     Pressable,
     FlatList,
 } from "react-native";
@@ -30,7 +29,15 @@ export default function CreateChatView() {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <Pressable
-                        onPress={() => router.replace(`chats/${item.id}`)}
+                        onPress={() =>
+                            router.replace({
+                                pathname: `chats/${item.id}`,
+                                params: {
+                                    name: `${item.firstName} ${item.lastName}`,
+                                    idMatch: item.id,
+                                },
+                            })
+                        }
                         style={styles.container}
                     >
                         <View style={styles.subContainer}>

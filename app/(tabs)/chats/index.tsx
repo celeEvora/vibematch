@@ -12,42 +12,13 @@ import { useRouter } from "expo-router";
 import { Chat } from "@/components/Chat";
 import MatchesView from "@/views/Matches/MatchesView";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-
-const chats = [
-    {
-        id: 1,
-        name: "John Doe",
-        message: "Hey, how are you?",
-        image: require("@/assets/img/avatars/avatar1.jpeg"),
-    },
-    {
-        id: 2,
-        name: "Jane Doe",
-        message: "Hey, how are you?",
-        image: require("@/assets/img/avatars/avatar2.jpeg"),
-    },
-    {
-        id: 3,
-        name: "Celeste Evora",
-        message: "Hey, how are you?",
-        image: require("@/assets/img/avatars/avatar3.jpeg"),
-    },
-    {
-        id: 4,
-        name: "Michelle Evora",
-        message: "Hey, how are you?",
-        image: require("@/assets/img/avatars/avatar4.jpg"),
-    },
-    {
-        id: 5,
-        name: "Valeria Avalos",
-        message: "Hey, how are you?",
-        image: require("@/assets/img/avatars/avatar5.jpeg"),
-    },
-];
+import { useChats } from "@/hooks/useChats";
+import { useUser } from "@/hooks/useUser";
 
 export default function Chats() {
     const [view, setView] = useState("Messages");
+    const { user } = useUser();
+    const { chats } = useChats(user.id);
 
     const router = useRouter();
 
@@ -106,13 +77,16 @@ export default function Chats() {
             {view === "Messages" ? (
                 <FlatList
                     data={chats}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item) => item.chatId.toString()}
                     renderItem={({ item }) => (
                         <Pressable
                             onPress={() =>
                                 router.push({
-                                    pathname: `/chats/${item.id}`,
-                                    params: { name: item.name },
+                                    pathname: `/chats/${item.chatId}`,
+                                    params: {
+                                        name: `${item.otherUser.firstName} ${item.otherUser.lastName}`,
+                                        idMatch: item.otherUser.id,
+                                    },
                                 })
                             }
                         >

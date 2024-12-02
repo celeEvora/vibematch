@@ -1,32 +1,20 @@
-import { View, Text, StyleSheet } from "react-native";
-import { useEffect, useState, useCallback } from "react";
+import { View, StyleSheet } from "react-native";
+import { useCallback } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { GiftedChat, Bubble, IMessage } from "react-native-gifted-chat";
+import { useMessages } from "@/hooks/useMessages";
+import { useUser } from "@/hooks/useUser";
 
 export default function ChatDetails() {
-    const { id, name } = useLocalSearchParams();
-
-    const [messages, setMessages] = useState<IMessage[]>([]);
-
-    useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: "Hello developer",
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: "React Native",
-                    avatar: require("@/assets/img/avatars/avatar1.jpeg"),
-                },
-            },
-        ]);
-    }, []);
+    const { id, idMatch } = useLocalSearchParams();
+    const { user } = useUser();
+    const { messages, addMessage } = useMessages(
+        parseInt(id as string),
+        parseInt(idMatch as string)
+    );
 
     const onSend = useCallback((messages: IMessage[] = []) => {
-        setMessages((previousMessages) =>
-            GiftedChat.append(previousMessages, messages)
-        );
+        addMessage(messages[0]);
     }, []);
 
     return (
@@ -35,7 +23,7 @@ export default function ChatDetails() {
                 messages={messages}
                 onSend={(messages) => onSend(messages)}
                 user={{
-                    _id: 1,
+                    _id: user.id,
                 }}
                 renderBubble={(props) => {
                     return (
