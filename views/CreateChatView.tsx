@@ -30,11 +30,10 @@ export default function CreateChatView() {
                 renderItem={({ item }) => (
                     <Pressable
                         onPress={() =>
-                            router.replace({
-                                pathname: `chats/${item.id}`,
+                            router.push({
+                                pathname: `./create-chat/${item.id}`,
                                 params: {
                                     name: `${item.firstName} ${item.lastName}`,
-                                    idMatch: item.id,
                                 },
                             })
                         }

@@ -15,7 +15,7 @@ export default function ChatsLayout() {
             <Stack.Screen
                 name="index"
                 options={{
-                    title: "Chats",
+                    title: "New Chat",
                     // headerShown: false,
                 }}
             />
@@ -24,20 +24,9 @@ export default function ChatsLayout() {
                 name="[id]"
                 options={({ route }: any) => ({
                     headerTitle: route.params?.name || "Chat",
-                    headerStyle: {
-                        backgroundColor: "#a885b2",
-                    },
-                    headerTintColor: "#fff",
+                    headerBackTitle: "Back",
+                    headerBackButtonDisplayMode: "minimal",
                 })}
-            />
-
-            <Stack.Screen
-                name="create-chat"
-                options={{
-                    headerTitle: "New Chat",
-                    presentation: "modal",
-                    headerShown: false,
-                }}
             />
         </Stack>
     );
