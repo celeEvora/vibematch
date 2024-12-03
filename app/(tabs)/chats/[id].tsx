@@ -4,18 +4,21 @@ import { useLocalSearchParams } from "expo-router";
 import { GiftedChat, Bubble, IMessage } from "react-native-gifted-chat";
 import { io } from "socket.io-client";
 import { useUser } from "@/hooks/useUser";
-import { useChats } from "@/hooks/useChats";
 
-const socket = io("http://192.168.0.3:3000");
+const socket = io(process.env.API_SOCKET_URL);
 
 export default function ChatDetails() {
     const { id: chatId, idMatch } = useLocalSearchParams();
     const [messages, setMessages] = useState<IMessage[]>([]);
     const { user } = useUser();
-    const { mutate: mutateChats } = useChats(user.id);
 
     useEffect(() => {
         if (chatId) {
+            console.log(
+                `Joining chat room for chatId: ${parseInt(chatId as string)}`
+            );
+
+            // Join the chat room
             socket.emit("load_messages", parseInt(chatId as string));
 
             const handleLoadMessages = (loadedMessages: IMessage[]) => {
@@ -24,17 +27,17 @@ export default function ChatDetails() {
                 );
             };
 
-            socket.on("load_messages", handleLoadMessages);
-
             const handleChatMessage = (msg: IMessage) => {
                 setMessages((prevMessages) => [msg, ...prevMessages]);
             };
 
+            socket.on("load_messages", handleLoadMessages);
             socket.on("chat_message", handleChatMessage);
 
             return () => {
+                console.log("Leaving chat room for chatId:", chatId);
+                socket.off("load_messages", handleLoadMessages);
                 socket.off("chat_message", handleChatMessage);
-                mutateChats();
             };
         }
     }, [chatId]);
@@ -73,7 +76,6 @@ export default function ChatDetails() {
                                 borderBottomRightRadius: 0,
                                 borderBottomLeftRadius: 20,
                                 padding: 3,
-                                // marginTop: 5,
                             },
                             left: {
                                 backgroundColor: "#f0f0f0",
@@ -82,7 +84,6 @@ export default function ChatDetails() {
                                 borderBottomLeftRadius: 0,
                                 borderBottomRightRadius: 20,
                                 padding: 3,
-                                // marginTop: 5,
                             },
                         }}
                     />

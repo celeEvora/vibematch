@@ -7,20 +7,39 @@ import {
     Pressable,
     TouchableOpacity,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Chat } from "@/components/Chat";
 import MatchesView from "@/views/Matches/MatchesView";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useChats } from "@/hooks/useChats";
 import { useUser } from "@/hooks/useUser";
+import { io } from "socket.io-client";
+
+const socket = io(process.env.API_SOCKET_URL);
 
 export default function Chats() {
     const [view, setView] = useState("Messages");
     const { user } = useUser();
-    const { chats } = useChats(user.id);
+    const { chats, mutate } = useChats(user.id);
 
     const router = useRouter();
+
+    useEffect(() => {
+        // Join the user's room
+        socket.emit("register_user", user.id);
+
+        // Listen for chat updates
+        const handleChatUpdated = (data: unknown) => {
+            mutate(); // Update the chat list
+        };
+
+        socket.on("chat_updated", handleChatUpdated);
+
+        return () => {
+            socket.off("chat_updated", handleChatUpdated);
+        };
+    }, [user.id, mutate]);
 
     return (
         <SafeAreaView style={styles.container}>
