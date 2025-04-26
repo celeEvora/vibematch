@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import {
     View,
     Text,
@@ -18,6 +18,12 @@ import { calculateAge } from "@/helpers/calculateAge";
 import { useUser } from "@/hooks/useUser";
 import { useLikeUser } from "@/hooks/useLikeUser";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import useAuthStore from "@/stores/useAuthStore";
+import { io } from "socket.io-client";
+import { useLikesForUser } from "@/hooks/useLikesForUser";
+import * as Notifications from "expo-notifications";
+
+const socket = io(process.env.API_SOCKET_URL);
 
 export default function HomeView() {
     const ref = useRef<SwiperCardRefType>();
@@ -26,6 +32,38 @@ export default function HomeView() {
     const { possibleMatches, isLoading, mutate, isValidating } =
         usePossibleMatches(user.id);
     const { processLikeUser } = useLikeUser();
+    const { mutate: mutateLikes } = useLikesForUser(user.id);
+
+    const token = useAuthStore((state) => state.token);
+
+    useEffect(() => {
+        socket.emit("register_user", user.id);
+        console.log("Joining user room for userId:", user.id);
+
+        socket.on("like_notification", async (data) => {
+            console.log("You received a like:", data);
+            mutateLikes();
+            await scheduleDailyNotification();
+        });
+
+        socket.on("message_notification", async (data) => {
+            console.log("You received a new message:", data);
+
+            await Notifications.scheduleNotificationAsync({
+                content: {
+                    title: "New Message",
+                    body: `You received a message: "${data.content}"`,
+                    data,
+                },
+                trigger: null,
+            });
+        });
+
+        return () => {
+            socket.off("like_notification");
+            // socket.off("match_notification");
+        };
+    }, []);
 
     const renderCard = useCallback((data: PossibleMatch) => {
         return (
@@ -167,10 +205,42 @@ export default function HomeView() {
     );
 
     async function likeUser(toUser: PossibleMatch, isLike: boolean) {
-        await processLikeUser({
+        // await processLikeUser({
+        //     fromUserId: user.id,
+        //     toUserId: toUser.id,
+        //     isLike,
+        // });
+        socket.emit("like_user", {
             fromUserId: user.id,
             toUserId: toUser.id,
-            isLike,
+            isLike: isLike,
+        });
+    }
+
+    if (!token || !user || isLoading) {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
+
+    async function scheduleDailyNotification() {
+        await Notifications.cancelAllScheduledNotificationsAsync();
+
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                title: "You received a new like! 💘",
+                body: "Check your likes to see who liked you!",
+                data: { customData: "value" },
+            },
+            trigger: null,
         });
     }
 

@@ -8,6 +8,7 @@ import {
     SafeAreaView,
     Alert,
     ActivityIndicator,
+    TouchableWithoutFeedback,
 } from "react-native";
 import Octicons from "@expo/vector-icons/Octicons";
 import { useCallback, useRef, useEffect, useState } from "react";
@@ -15,7 +16,10 @@ import { useUser } from "@/hooks/useUser";
 import { calculateAge } from "@/helpers/calculateAge";
 import { capilizeWord } from "@/helpers/capitalizeWord";
 import { useRouter } from "expo-router";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+    GestureHandlerRootView,
+    Pressable,
+} from "react-native-gesture-handler";
 import {
     BottomSheetModal,
     BottomSheetView,
@@ -23,6 +27,76 @@ import {
 } from "@gorhom/bottom-sheet";
 import { checkPermissions, tookPhoto, pickImage } from "@/utils/photoUtils";
 import { useUpdateProfilePicture } from "@/hooks/useUpdateProfilePicture";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+
+function BigProfileImage({
+    profilePictureUrl,
+    setShowProfilePicture,
+}: {
+    profilePictureUrl: string;
+    setShowProfilePicture: (value: boolean) => void;
+}) {
+    async function handleShareImage(imageUri: string) {
+        try {
+            if (!imageUri) {
+                Alert.alert("Error", "No image available for sharing.");
+                return;
+            }
+
+            // Download the image to a temporary file
+            const fileName = imageUri.split("/").pop();
+            const localUri =
+                FileSystem.documentDirectory &&
+                FileSystem.documentDirectory + fileName;
+
+            await FileSystem.downloadAsync(imageUri, localUri as string);
+
+            if (await Sharing.isAvailableAsync()) {
+                await Sharing.shareAsync(localUri as string);
+            } else {
+                Alert.alert(
+                    "Error",
+                    "Sharing is not available on this device."
+                );
+            }
+        } catch (error) {
+            console.error("Error sharing the image:", error);
+            Alert.alert("Error", "Failed to share the image.");
+        }
+    }
+
+    return (
+        <TouchableWithoutFeedback onPress={() => setShowProfilePicture(false)}>
+            <View style={styles.fullScreenContainer}>
+                <Image
+                    source={{ uri: profilePictureUrl }}
+                    style={styles.fullScreenImage}
+                    resizeMode="contain"
+                />
+                <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => setShowProfilePicture(false)}
+                >
+                    <Text style={styles.closeButtonText}>X</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{
+                        position: "absolute",
+                        top: "80%",
+                        justifyContent: "center",
+                        backgroundColor: "rgba(255, 255, 255, 0.7)",
+                        borderRadius: 25,
+                        padding: 10,
+                    }}
+                    onPress={() => handleShareImage(profilePictureUrl)}
+                >
+                    <Text>Download image</Text>
+                </TouchableOpacity>
+            </View>
+        </TouchableWithoutFeedback>
+    );
+}
 
 export default function ProfileView() {
     const { user } = useUser();
@@ -41,6 +115,7 @@ export default function ProfileView() {
     const [image, setImage] = useState<string | null>(null);
     const { processUpdateProfilePicture, isLoading } =
         useUpdateProfilePicture();
+    const [showProfilePicture, setShowProfilePicture] = useState(false);
 
     const router = useRouter();
 
@@ -79,6 +154,12 @@ export default function ProfileView() {
 
     return (
         <GestureHandlerRootView style={styles.modalContainer}>
+            {showProfilePicture && (
+                <BigProfileImage
+                    profilePictureUrl={profilePicture}
+                    setShowProfilePicture={setShowProfilePicture}
+                />
+            )}
             <BottomSheetModalProvider>
                 <ScrollView style={styles.container}>
                     <View style={styles.circle}>
@@ -89,41 +170,46 @@ export default function ProfileView() {
                                 alignItems: "center",
                             }}
                         >
-                            <View
-                                style={{
-                                    position: "relative",
-                                }}
+                            <Pressable
+                                onPress={() => setShowProfilePicture(true)}
                             >
-                                <Image
-                                    source={{
-                                        uri: profilePicture,
+                                <View
+                                    style={{
+                                        position: "relative",
                                     }}
-                                    style={styles.avatar}
-                                    resizeMode="contain"
-                                />
-                                {isLoading && (
-                                    <View
-                                        style={{
-                                            position: "absolute",
-                                            top: 0,
-                                            left: 0,
-                                            backgroundColor:
-                                                "rgba(0, 0, 0, 0.5)",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            width: 135,
-                                            height: 135,
-                                            aspectRatio: 1,
-                                            borderRadius: 100,
+                                >
+                                    <Image
+                                        source={{
+                                            uri: profilePicture,
                                         }}
-                                    >
-                                        <ActivityIndicator
-                                            size="large"
-                                            color="#fff"
-                                        />
-                                    </View>
-                                )}
-                            </View>
+                                        style={styles.avatar}
+                                        resizeMode="contain"
+                                    />
+                                    {isLoading && (
+                                        <View
+                                            style={{
+                                                position: "absolute",
+                                                top: 0,
+                                                left: 0,
+                                                backgroundColor:
+                                                    "rgba(0, 0, 0, 0.5)",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                width: 135,
+                                                height: 135,
+                                                aspectRatio: 1,
+                                                borderRadius: 100,
+                                            }}
+                                        >
+                                            <ActivityIndicator
+                                                size="large"
+                                                color="#fff"
+                                            />
+                                        </View>
+                                    )}
+                                </View>
+                            </Pressable>
+
                             <View
                                 style={{
                                     display: "flex",
@@ -238,7 +324,7 @@ export default function ProfileView() {
 
                         <TouchableOpacity
                             style={styles.matchButton}
-                            onPress={() => console.log("Start matching")}
+                            onPress={() => router.replace("/")}
                         >
                             <Text style={styles.matchText}>Start Matching</Text>
                         </TouchableOpacity>
@@ -428,5 +514,33 @@ const styles = StyleSheet.create({
         alignItems: "center",
         // backgroundColor: "#fff",
         // backgroundColor: "red",
+    },
+    fullScreenContainer: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.9)",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 100,
+    },
+    fullScreenImage: {
+        width: "100%",
+        height: "100%",
+    },
+    closeButton: {
+        position: "absolute",
+        top: 40,
+        right: 20,
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
+        borderRadius: 25,
+        padding: 10,
+    },
+    closeButtonText: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "#000",
     },
 });

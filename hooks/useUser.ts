@@ -16,9 +16,7 @@ export function useUser(): UserHookResponse {
         data: { data } = {} as UserResponse,
         error,
         mutate,
-    } = useSWR<UserResponse>("/auth/me", fetcher, {
-        suspense: true,
-    });
+    } = useSWR<UserResponse>("/auth/me", fetcher);
 
     return {
         user: data,

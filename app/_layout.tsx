@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Slot, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Stack } from "expo-router/stack";
 import useAuthStore from "@/stores/useAuthStore";
 import { ActivityIndicator, View } from "react-native";
@@ -13,8 +13,13 @@ export default function Layout() {
 
     useEffect(() => {
         async function prepare() {
-            await loadAuth(); // Load the auth state
-            setIsReady(true); // Indicate that the app is ready
+            try {
+                await loadAuth(); // Load the auth state and ensure token is loaded
+            } catch (error) {
+                console.error("Error loading auth state:", error);
+            } finally {
+                setIsReady(true); // Indicate that the app is ready
+            }
         }
         prepare();
     }, []);
@@ -41,16 +46,10 @@ export default function Layout() {
     }
 
     return (
-        <>
-            {/* <Slot /> */}
-            <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="login" options={{ headerShown: false }} />
-                <Stack.Screen
-                    name="register"
-                    options={{ headerShown: false }}
-                />
-            </Stack>
-        </>
+        <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="login" options={{ headerShown: false }} />
+            <Stack.Screen name="register" options={{ headerShown: false }} />
+        </Stack>
     );
 }

@@ -5,6 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { GradientButton } from "@/components/GradientButton";
 import { AuthLayout } from "@/components/AuthLayout";
 import { useLogin } from "@/hooks/useLogin";
+import SecureInputForm from "@/components/SecureInputForm";
 
 export default function LoginView() {
     const { processLogin } = useLogin();
@@ -34,7 +35,7 @@ export default function LoginView() {
                             }}
                         />
 
-                        <TextInputForm
+                        <SecureInputForm
                             label="Password"
                             name={"password"}
                             placeholder={"********"}

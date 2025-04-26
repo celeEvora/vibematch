@@ -7,19 +7,30 @@ import { useUser } from "@/hooks/useUser";
 
 const socket = io(process.env.API_SOCKET_URL);
 
+const getRoomId = (userId1: string, userId2: string): string => {
+    return [userId1, userId2].sort().join(":");
+};
+
 export default function ChatDetails() {
     const { id: chatId, idMatch } = useLocalSearchParams();
     const [messages, setMessages] = useState<IMessage[]>([]);
     const { user } = useUser();
 
     useEffect(() => {
-        if (chatId) {
+        if (user && idMatch) {
+            const chatRoom = getRoomId(String(user.id), idMatch as string);
+
             console.log(
-                `Joining chat room for chatId: ${parseInt(chatId as string)}`
+                `Joining chat room for chatId: ${parseInt(chatRoom as string)}`
             );
 
             // Join the chat room
-            socket.emit("load_messages", parseInt(chatId as string));
+            // socket.emit("load_messages", parseInt(chatId as string));
+            socket.emit("load_messages", {
+                chatId: parseInt(chatId as string),
+                senderId: user.id,
+                receiverId: idMatch,
+            });
 
             const handleLoadMessages = (loadedMessages: IMessage[]) => {
                 setMessages((prevMessages) =>

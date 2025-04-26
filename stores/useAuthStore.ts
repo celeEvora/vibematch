@@ -12,6 +12,19 @@ type AuthStore = {
     loadAuth: () => Promise<void>;
 };
 
+// Nueva función para validar el token
+const validateToken = async (token: string | null): Promise<boolean> => {
+    if (!token) return false;
+    try {
+        // Aquí puedes usar un endpoint para validar el token o verificar su expiración localmente
+        const isTokenValid = false; // TODO: IMPLEMENT VALIDATION LOGIC TO CHECK IF TOKEN IS VALID
+        return isTokenValid;
+    } catch (error) {
+        console.error("Error validating token:", error);
+        return false;
+    }
+};
+
 const useAuthStore = create<AuthStore>((set, get) => ({
     user: null,
     token: null,
@@ -28,11 +41,27 @@ const useAuthStore = create<AuthStore>((set, get) => ({
     },
 
     // This function is called when the app starts
+    // loadAuth: async () => {
+    //     const token = await AsyncStorage.getItem("authToken");
+
+    //     if (token) {
+    //         set({ token });
+    //     }
+    //     set({ isAuthLoaded: true });
+    // },
+
     loadAuth: async () => {
         const token = await AsyncStorage.getItem("authToken");
 
         if (token) {
-            set({ token });
+            const isValid = await validateToken(token);
+            if (isValid) {
+                set({ token });
+            } else {
+                // El token no es válido
+                await AsyncStorage.removeItem("authToken");
+                set({ token: null });
+            }
         }
         set({ isAuthLoaded: true });
     },

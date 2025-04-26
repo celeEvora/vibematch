@@ -28,6 +28,7 @@ export default function Chats() {
     useEffect(() => {
         // Join the user's room
         socket.emit("register_user", user.id);
+        console.log("Joining user room for userId:", user.id);
 
         // Listen for chat updates
         const handleChatUpdated = (data: unknown) => {
@@ -38,6 +39,7 @@ export default function Chats() {
 
         return () => {
             socket.off("chat_updated", handleChatUpdated);
+            console.log("Leaving user room for userId:", user.id);
         };
     }, [user.id, mutate]);
 

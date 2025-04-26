@@ -16,10 +16,7 @@ const fetcher = async (id: string): Promise<MatchResponse> =>
 export function usePossibleMatches(id: number): PossibleMatchesHookResponse {
     const { data, error, mutate, isValidating } = useSWR<MatchResponse>(
         id.toString(),
-        fetcher,
-        {
-            suspense: true,
-        }
+        fetcher
     );
 
     return {

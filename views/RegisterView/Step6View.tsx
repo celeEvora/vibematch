@@ -16,6 +16,7 @@ export default function Step6View() {
     const router = useRouter();
     const { data, setData } = useRegisterStore();
     const { processRegister, isLoading } = useRegister();
+    const clearData = useRegisterStore((state) => state.clearData);
 
     const methods = useForm({
         defaultValues: data,
@@ -27,7 +28,8 @@ export default function Step6View() {
 
         const { data: currentData } = useRegisterStore.getState();
         await processRegister(currentData as RegisterFormType);
-        // TODO: Delete the store data after the registration is successful
+
+        clearData();
     }
 
     return (

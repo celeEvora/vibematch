@@ -12,6 +12,7 @@ import { useMatchesForUser } from "@/hooks/useMatchesForUser";
 import { useUser } from "@/hooks/useUser";
 import useSearchUser from "@/hooks/useSearchUser";
 import SearchBarUser from "@/components/SearchBarUser";
+import { useEffect } from "react";
 
 export default function MatchesView() {
     const { user } = useUser();
@@ -20,6 +21,10 @@ export default function MatchesView() {
     const router = useRouter();
 
     const filteredMatches = filterMatches(search, matches);
+
+    useEffect(() => {
+        console.log("MatchesView");
+    }, []);
 
     return (
         <>
